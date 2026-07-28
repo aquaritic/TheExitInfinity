@@ -29,7 +29,14 @@ const stats = {
 
 const game = {
     hasAnomaly: false,
-    anomalyChance: .5
+    anomalyChance: .5,
+    firstRoom: true
+};
+
+const transition = {
+    active: false,
+    change: 0,
+    speed: .05
 };
 
 function getAccuracy(){
@@ -43,8 +50,14 @@ function getAccuracy(){
 }
 
 function generateRoom(){
-    room.colors = [room.normalColors];
-    game.hasAnomaly = Math.random() < game.anomalyChance;
+    room.colors = [...room.normalColors];
+
+    if(game.firstRoom){
+        game.hasAnomaly = false;
+        game.firstRoom = false;
+    } else {
+        game.hasAnomaly = Math.random() < game.anomalyChance;
+    }
 
     if(game.hasAnomaly){
         const corner = Math.floor(Math.random() * 4);
@@ -55,15 +68,19 @@ function generateRoom(){
             "#ff8800",
             "#00ff88"
         ];
-        const randomColor = anomalyColors[Math.floor(Math.random() * anomalyColors.length)];
-
-        room.colors[corner] = randomColor;
+        
+        room.colors[corner] = anomalyColors[Math.floor(Math.random() * anomalyColors.length)];
     }
 
     stats.rooms++;
 };
 
 function makeChoice(playerThinksAnomaly){
+    if(stats.rooms === 1){
+        generateRoom();
+        return;
+    }
+
     if(playerThinksAnomaly === game.hasAnomaly){
         stats.caught++;
     } else {
@@ -71,11 +88,16 @@ function makeChoice(playerThinksAnomaly){
     }
 
     generateRoom();
+    startTransition();
+}
+
+function startTransition(){
+    transition.active = true;
 }
 
 function drawRoom(){
     const canvasX = canvas.width / 2;
-    const canvasY = canvas.width / 2;
+    const canvasY = canvas.height / 2;
     const size = Math.min(room.squareSize, canvas.height * .45);
     const halfSize = size/2;
 
@@ -110,16 +132,24 @@ window.addEventListener("keydown", e => {
         return;
     }
 
-    if(e.key === "w"){
+    if(e.key.toLowerCase() === "w"){
         makeChoice(false);
     }
-    if(e.key === "s"){
+    if(e.key.toLowerCase() === "s"){
         makeChoice(true);
     }
 });
 
 function update(){
+    if(transition.active){
+        transition.change += transition.speed;
 
+        if(transition.change >= 1){
+            generateRoom();
+            transition.change = 1;
+            transition.active = false;
+        }
+    }
 }
 
 function draw(){
@@ -152,6 +182,34 @@ function draw(){
         30,
         190
     );
+
+    if(transition.active || transition.change > 0){
+        ctx.fillStyle = `rgba(0, 0, 0, ${transition.alpha})`;
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        if(!transition.active){
+            transition.change -= transition.speed;
+            if(transition.change < 0){
+                transition.change = 0;
+            }
+        }
+    }
+
+    if(stats.rooms === 1){
+        ctx.fillStyle = "white";
+        ctx.font = "24px sans serif";
+
+        ctx.fillText(
+            "Memorize the colors and their position, W to start. W means you think that the colors are the original rooms while S means you think its changed",
+            30,
+            canvas.height - 40
+        );
+    }
 }
 
 function loop(){
