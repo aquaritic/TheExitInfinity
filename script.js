@@ -184,7 +184,7 @@ function draw(){
     );
 
     if(transition.active || transition.change > 0){
-        ctx.fillStyle = `rgba(0, 0, 0, ${transition.alpha})`;
+        ctx.fillStyle = `rgba(0, 0, 0, ${transition.change})`;
         ctx.fillRect(
             0,
             0,
