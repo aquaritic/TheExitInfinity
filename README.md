@@ -21,4 +21,7 @@ once they enter a new hallway they have the choice to move forward or backward d
 if they fail to catch an anomaly they are sent back to start and must get 8 anomalies in a row to escape. 
 
 How to run/install : Go to aquaritic.github.io/TheExitInfinity 
-It requires javascript, html, and css to run
+
+Local Setup:
+It requires javascript, html, and css to run, no extra dependencies
+To run it locally you can use VS Code live server, you just need the live server extension. Then you just open the project folder and click on index.html and select open with live server
