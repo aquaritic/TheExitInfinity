@@ -19,3 +19,5 @@ The exit 8 summary so you can understand my game:
 In the exit 8, the player is trapped in a subway and must memorize details like posters, etc 
 once they enter a new hallway they have the choice to move forward or backward depending on if they think there is an anomaly present, 
 if they fail to catch an anomaly they are sent back to start and must get 8 anomalies in a row to escape. 
+
+How to run: Go to aquaritic.github.io/TheExitInfinity
