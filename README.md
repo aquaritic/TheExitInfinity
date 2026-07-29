@@ -20,4 +20,5 @@ In the exit 8, the player is trapped in a subway and must memorize details like 
 once they enter a new hallway they have the choice to move forward or backward depending on if they think there is an anomaly present, 
 if they fail to catch an anomaly they are sent back to start and must get 8 anomalies in a row to escape. 
 
-How to run: Go to aquaritic.github.io/TheExitInfinity
+How to run/install : Go to aquaritic.github.io/TheExitInfinity 
+It requires javascript, html, and css to run
